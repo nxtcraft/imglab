@@ -128,6 +128,7 @@ footer a{color:#7c3aed;text-decoration:none}
   <div class="tab" onclick="switchTab('convert',this)">🔄 Convert</div>
   <div class="tab" onclick="switchTab('passport',this)">🪪 Passport Photo</div>
   <div class="tab" onclick="switchTab('exam',this)">📋 Exam Photo</div>
+  <div class="tab" onclick="switchTab('heic',this)">📱 HEIC→JPG</div>
 </div>
 
 <!-- BG REMOVE -->
@@ -289,6 +290,51 @@ footer a{color:#7c3aed;text-decoration:none}
       <button class="btn-primary" onclick="cvtDownloadAll()">⬇ Download All</button>
       <button class="btn-sec" onclick="cvtReset()">Convert more</button>
     </div>
+  </div>
+</div>
+
+<!-- HEIC TO JPG -->
+<div id="panel-heic" class="tool-panel">
+  <h2>HEIC → JPG Converter</h2>
+  <p class="subtitle">Convert iPhone HEIC photos to JPG/PNG. Batch up to 50 files. Runs in your browser — nothing uploaded.</p>
+  <div style="background:#1e3a5f;border:1px solid #2563eb;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#bfdbfe">
+    <strong>What is HEIC?</strong> iPhones save photos as HEIC (High Efficiency Image) by default since iOS 11. Android, Windows, and most apps can't open them. Convert here to JPG for universal compatibility.
+  </div>
+  <div class="upload-zone" id="heic-drop">
+    <div class="up-icon">📱</div>
+    <div class="up-title">Drop HEIC/HEIF files here (up to 50)</div>
+    <div class="up-sub">Also accepts JPG, PNG, WebP — batch convert any format</div>
+    <button class="upload-btn" onclick="document.getElementById('heic-file').click()">Choose Files</button>
+  </div>
+  <input type="file" id="heic-file" accept=".heic,.heif,image/*" multiple style="display:none">
+  <div id="heic-controls" style="display:none">
+    <div class="card">
+      <div class="card-title">Output Options</div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+        <div>
+          <label style="font-size:13px;font-weight:600;margin-right:8px">Output Format:</label>
+          <select class="fmt-select" id="heic-fmt">
+            <option value="image/jpeg">JPG (smaller, universal)</option>
+            <option value="image/png">PNG (lossless)</option>
+            <option value="image/webp">WebP (modern browsers)</option>
+          </select>
+        </div>
+        <div>
+          <label style="font-size:13px;font-weight:600;margin-right:8px">Quality:</label>
+          <select class="fmt-select" id="heic-quality">
+            <option value="0.95">High (95%)</option>
+            <option value="0.85" selected>Medium (85%)</option>
+            <option value="0.70">Low (70%)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="file-list" id="heic-list"></div>
+    <div class="actions">
+      <button class="btn-primary" id="heic-dl-all" onclick="heicDownloadAll()">⬇ Download All as ZIP</button>
+      <button class="btn-sec" onclick="heicReset()">Convert more</button>
+    </div>
+    <p style="font-size:11px;color:#9ca3af;margin-top:8px;text-align:center">All processing happens in your browser. Your photos never leave your device.</p>
   </div>
 </div>
 
@@ -855,6 +901,94 @@ function downloadSig() {
 
 // Init exam presets
 document.getElementById('exam-req-text').textContent = EXAM_PRESETS.ssc.label;
+</script>
+<script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<script>
+// ---- HEIC converter ----
+let heicItems = [];
+
+makeDropMulti('heic-drop','heic-file', heicHandle);
+
+async function heicHandle(files) {
+  heicItems = [];
+  document.getElementById('heic-controls').style.display = '';
+  document.getElementById('heic-drop').style.display = 'none';
+  const list = document.getElementById('heic-list');
+  list.innerHTML = '<div style="padding:12px;color:#6b7280;font-size:13px">⏳ Processing files…</div>';
+
+  const fmt = document.getElementById('heic-fmt').value;
+  const quality = parseFloat(document.getElementById('heic-quality').value);
+  const ext = fmt === 'image/jpeg' ? 'jpg' : fmt === 'image/png' ? 'png' : 'webp';
+
+  for (const file of Array.from(files)) {
+    const isHeic = file.name.toLowerCase().endsWith('.heic') || file.name.toLowerCase().endsWith('.heif') || file.type === 'image/heic' || file.type === 'image/heif';
+    try {
+      let blob;
+      if (isHeic) {
+        blob = await heic2any({ blob: file, toType: fmt, quality });
+        if (Array.isArray(blob)) blob = blob[0];
+      } else {
+        // Non-HEIC: draw to canvas and re-encode
+        const img = await loadImg(URL.createObjectURL(file));
+        const c = document.createElement('canvas');
+        c.width = img.naturalWidth; c.height = img.naturalHeight;
+        c.getContext('2d').drawImage(img, 0, 0);
+        const dataUrl = c.toDataURL(fmt, quality);
+        blob = await fetch(dataUrl).then(r => r.blob());
+      }
+      const outName = file.name.replace(/\.[^.]+$/, '') + '.' + ext;
+      const url = URL.createObjectURL(blob);
+      heicItems.push({ name: outName, blob, url, origSize: file.size, newSize: blob.size });
+    } catch(e) {
+      heicItems.push({ name: file.name, error: e.message || 'Failed' });
+    }
+  }
+
+  renderHeicList();
+}
+
+function loadImg(src) {
+  return new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; });
+}
+
+function renderHeicList() {
+  const list = document.getElementById('heic-list');
+  list.innerHTML = heicItems.map((item, i) => {
+    if (item.error) return `<div class="file-item" style="color:#ef4444">${item.name} — ❌ ${item.error}</div>`;
+    const saved = Math.round((1 - item.newSize/item.origSize)*100);
+    return `<div class="file-item">
+      <img src="${item.url}" style="width:48px;height:48px;object-fit:cover;border-radius:6px;flex-shrink:0">
+      <div style="flex:1;min-width:0">
+        <div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.name}</div>
+        <div style="font-size:11px;color:#6b7280">${(item.origSize/1024).toFixed(0)}KB → ${(item.newSize/1024).toFixed(0)}KB ${saved > 0 ? '(-'+saved+'%)' : ''}</div>
+      </div>
+      <a href="${item.url}" download="${item.name}" class="btn-sec" style="padding:5px 12px;font-size:12px;text-decoration:none">⬇</a>
+    </div>`;
+  }).join('');
+}
+
+async function heicDownloadAll() {
+  const good = heicItems.filter(i => !i.error);
+  if (good.length === 1) {
+    const a = document.createElement('a'); a.href = good[0].url; a.download = good[0].name; a.click(); return;
+  }
+  const btn = document.getElementById('heic-dl-all');
+  btn.textContent = '⏳ Zipping…'; btn.disabled = true;
+  const zip = new JSZip();
+  for (const item of good) zip.file(item.name, item.blob);
+  const blob = await zip.generateAsync({ type: 'blob' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'converted-photos.zip'; a.click();
+  btn.textContent = '⬇ Download All as ZIP'; btn.disabled = false;
+}
+
+function heicReset() {
+  heicItems = [];
+  document.getElementById('heic-controls').style.display = 'none';
+  document.getElementById('heic-drop').style.display = '';
+  document.getElementById('heic-file').value = '';
+}
 </script>
 <script>if("serviceWorker"in navigator)navigator.serviceWorker.register("/imagecraft/sw.js");</script>
 </body>
