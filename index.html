@@ -17,6 +17,7 @@
 <meta property="og:type" content="website">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"ImgLab","url":"https://nxtcraft.github.io/imglab/","description":"Free browser-based image tools."}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How does the background remover work?","acceptedAnswer":{"@type":"Answer","text":"The background remover uses AI (Transformers.js) running in your browser to detect and separate the foreground subject from the background. No image is uploaded — processing is local."}},{"@type":"Question","name":"What image formats does ImgLab support?","acceptedAnswer":{"@type":"Answer","text":"JPG, PNG, WebP and GIF for most tools. The converter supports JPG ↔ PNG ↔ WebP ↔ AVIF conversion. The MOV→MP4 tool converts iPhone .mov files using FFmpeg.wasm."}},{"@type":"Question","name":"How much does the image compressor reduce file size?","acceptedAnswer":{"@type":"Answer","text":"At 80% quality, most photos see 50–70% size reduction with no visible quality loss. The slider lets you trade off size vs. quality in real time."}}]}</script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,'Inter',BlinkMacSystemFont,sans-serif;background:#faf5ff;color:#1e1b4b;min-height:100vh}
@@ -1099,6 +1100,8 @@ function movReset() {
   if (movObjectURL) { URL.revokeObjectURL(movObjectURL); movObjectURL = null; }
 }
 </script>
+<style>.related-tools{background:#0f0a1e;border-top:1px solid #2d1b4e;padding:1.25rem 1.5rem;margin-top:1rem}.related-tools h3{font-size:.8rem;font-weight:700;color:#a78bfa;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.6rem}.related-tools-grid{display:flex;flex-wrap:wrap;gap:.5rem}.related-tools a{display:inline-flex;align-items:center;gap:.35rem;padding:.35rem .8rem;border-radius:20px;border:1.5px solid #2d1b4e;color:#c4b5fd;font-size:.82rem;font-weight:600;text-decoration:none;transition:all .15s}.related-tools a:hover{background:#7c3aed;color:#fff;border-color:#7c3aed}</style>
+<div class="related-tools"><h3>Related Tools</h3><div class="related-tools-grid"><a href="https://nxtcraft.github.io/huelab/">🎨 HueLab</a><a href="https://nxtcraft.github.io/color-contrast/">🎨 Color Contrast</a><a href="https://nxtcraft.github.io/css-gradient/">🌈 CSS Gradient</a><a href="https://nxtcraft.github.io/qrcraft/">⬛ QR Craft</a></div></div>
 <script>if("serviceWorker"in navigator)navigator.serviceWorker.register("/imagecraft/sw.js");</script>
 </body>
 </html>
