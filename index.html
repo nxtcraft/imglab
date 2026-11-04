@@ -129,6 +129,7 @@ footer a{color:#7c3aed;text-decoration:none}
   <div class="tab" onclick="switchTab('passport',this)">🪪 Passport Photo</div>
   <div class="tab" onclick="switchTab('exam',this)">📋 Exam Photo</div>
   <div class="tab" onclick="switchTab('heic',this)">📱 HEIC→JPG</div>
+  <div class="tab" onclick="switchTab('mov',this)">🎬 MOV→MP4</div>
 </div>
 
 <!-- BG REMOVE -->
@@ -335,6 +336,41 @@ footer a{color:#7c3aed;text-decoration:none}
       <button class="btn-sec" onclick="heicReset()">Convert more</button>
     </div>
     <p style="font-size:11px;color:#9ca3af;margin-top:8px;text-align:center">All processing happens in your browser. Your photos never leave your device.</p>
+  </div>
+</div>
+
+<!-- MOV TO MP4 -->
+<div id="panel-mov" class="tool-panel">
+  <h2>MOV → MP4 Converter</h2>
+  <p class="subtitle">Convert iPhone MOV videos to MP4 for Android, Windows & web sharing. Runs in your browser using FFmpeg.wasm — no upload.</p>
+  <div style="background:#1e1f2e;border:1px solid #4f46e5;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#c7d2fe">
+    <strong>Why MOV fails on Android?</strong> iPhones record in QuickTime MOV format. Most Android phones, WhatsApp Web and Windows can't open MOV directly. Converting to MP4 (H.264) gives universal compatibility.
+  </div>
+  <div id="ffmpeg-load-status" style="display:none;padding:10px;background:#1e293b;border-radius:8px;margin-bottom:12px;font-size:13px;color:#94a3b8">⏳ Loading FFmpeg (first time ~5MB, then cached)…</div>
+  <div class="upload-zone" id="mov-drop">
+    <div class="up-icon">🎬</div>
+    <div class="up-title">Drop MOV / MP4 / AVI / MKV files here</div>
+    <div class="up-sub">Converts any video to MP4 (H.264) — works on all devices</div>
+    <button class="upload-btn" onclick="document.getElementById('mov-file').click()">Choose Video File</button>
+  </div>
+  <input type="file" id="mov-file" accept="video/*,.mov,.mp4,.avi,.mkv,.webm,.3gp" style="display:none">
+  <div id="mov-progress-wrap" style="display:none;margin-top:16px">
+    <div style="font-size:13px;color:#94a3b8;margin-bottom:6px" id="mov-status">Converting…</div>
+    <div style="height:8px;background:#1e293b;border-radius:4px;overflow:hidden">
+      <div id="mov-prog-bar" style="height:100%;background:#6366f1;border-radius:4px;width:0%;transition:width .3s"></div>
+    </div>
+  </div>
+  <div id="mov-result" style="display:none;margin-top:16px">
+    <div style="background:#0f2a1f;border:1px solid #22c55e;border-radius:10px;padding:14px 16px;font-size:14px;color:#4ade80;margin-bottom:10px">
+      ✅ Conversion complete! <span id="mov-size-info"></span>
+    </div>
+    <div class="actions">
+      <a id="mov-dl-link" class="btn-primary" download="converted.mp4" style="text-decoration:none">⬇ Download MP4</a>
+      <button class="btn-sec" onclick="movReset()">Convert another</button>
+    </div>
+  </div>
+  <div style="margin-top:20px;background:#0f172a;border-radius:10px;padding:14px;font-size:12px;color:#64748b;line-height:1.6">
+    <strong style="color:#94a3b8">Note:</strong> FFmpeg.wasm runs entirely in your browser. First load downloads ~5MB (cached after). Large files (&gt;500MB) may be slow depending on your device RAM. For very large files, use HandBrake (free desktop app) for best performance.
   </div>
 </div>
 
@@ -988,6 +1024,79 @@ function heicReset() {
   document.getElementById('heic-controls').style.display = 'none';
   document.getElementById('heic-drop').style.display = '';
   document.getElementById('heic-file').value = '';
+}
+
+// ── MOV → MP4 ──────────────────────────────────────────────────────────────
+let ffmpeg = null;
+let movObjectURL = null;
+
+const movDrop = document.getElementById('mov-drop');
+const movFile = document.getElementById('mov-file');
+movDrop.addEventListener('dragover', e=>{e.preventDefault();movDrop.classList.add('drag');});
+movDrop.addEventListener('dragleave', ()=>movDrop.classList.remove('drag'));
+movDrop.addEventListener('drop', e=>{e.preventDefault();movDrop.classList.remove('drag');if(e.dataTransfer.files[0])movConvert(e.dataTransfer.files[0]);});
+movFile.addEventListener('change', e=>{if(e.target.files[0])movConvert(e.target.files[0]);});
+
+async function loadFFmpeg() {
+  if (ffmpeg) return;
+  document.getElementById('ffmpeg-load-status').style.display = '';
+  const { FFmpeg } = await import('https://unpkg.com/@ffmpeg/ffmpeg@0.12.6/dist/esm/index.js');
+  const { toBlobURL } = await import('https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js');
+  ffmpeg = new FFmpeg();
+  const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.4/dist/esm';
+  await ffmpeg.load({
+    coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+    wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+  });
+  document.getElementById('ffmpeg-load-status').style.display = 'none';
+}
+
+async function movConvert(file) {
+  movDrop.style.display = 'none';
+  document.getElementById('mov-progress-wrap').style.display = '';
+  document.getElementById('mov-result').style.display = 'none';
+
+  try {
+    await loadFFmpeg();
+    const { fetchFile } = await import('https://unpkg.com/@ffmpeg/util@0.12.1/dist/esm/index.js');
+
+    ffmpeg.on('progress', ({progress})=>{
+      document.getElementById('mov-prog-bar').style.width = Math.round(progress*100)+'%';
+      document.getElementById('mov-status').textContent = `Converting… ${Math.round(progress*100)}%`;
+    });
+
+    const inName = file.name;
+    const outName = inName.replace(/\.[^.]+$/, '') + '.mp4';
+
+    document.getElementById('mov-status').textContent = 'Reading file…';
+    await ffmpeg.writeFile(inName, await fetchFile(file));
+    document.getElementById('mov-status').textContent = 'Converting…';
+    await ffmpeg.exec(['-i', inName, '-vcodec', 'libx264', '-acodec', 'aac', '-preset', 'fast', outName]);
+
+    const data = await ffmpeg.readFile(outName);
+    const blob = new Blob([data.buffer], { type: 'video/mp4' });
+    if (movObjectURL) URL.revokeObjectURL(movObjectURL);
+    movObjectURL = URL.createObjectURL(blob);
+
+    document.getElementById('mov-dl-link').href = movObjectURL;
+    document.getElementById('mov-dl-link').download = outName;
+    document.getElementById('mov-size-info').textContent =
+      `Original: ${(file.size/1024/1024).toFixed(1)}MB → MP4: ${(blob.size/1024/1024).toFixed(1)}MB`;
+
+    document.getElementById('mov-progress-wrap').style.display = 'none';
+    document.getElementById('mov-result').style.display = '';
+  } catch(err) {
+    document.getElementById('mov-status').textContent = '❌ Conversion failed: ' + err.message;
+  }
+}
+
+function movReset() {
+  document.getElementById('mov-drop').style.display = '';
+  document.getElementById('mov-progress-wrap').style.display = 'none';
+  document.getElementById('mov-result').style.display = 'none';
+  document.getElementById('mov-prog-bar').style.width = '0%';
+  document.getElementById('mov-file').value = '';
+  if (movObjectURL) { URL.revokeObjectURL(movObjectURL); movObjectURL = null; }
 }
 </script>
 <script>if("serviceWorker"in navigator)navigator.serviceWorker.register("/imagecraft/sw.js");</script>
