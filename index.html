@@ -119,6 +119,7 @@ footer a{color:#7c3aed;text-decoration:none}
 </style>
 
 <link rel="stylesheet" id="nc-dark" href="/assets/nc-dark.css">
+<script>function ncEsc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c])}</script>
 </head>
 <body>
 
@@ -677,7 +678,7 @@ function cvtHandle(files){
 function cvtProcess(file,idx){
   const item={file,dataUrl:'',ext:''};cvtItems.push(item);
   const row=document.createElement('div');row.className='file-item';row.id='cvt-row-'+idx;
-  row.innerHTML=`<img class="file-thumb" src="" alt=""><div class="file-info"><div class="file-name">${file.name}</div><div class="file-size">${fmtSz(file.size)}</div></div><span class="badge proc" id="cvt-badge-${idx}">…</span><a class="dl-link" id="cvt-dl-${idx}" style="display:none">Download</a>`;
+  row.innerHTML=`<img class="file-thumb" src="" alt=""><div class="file-info"><div class="file-name">${ncEsc(file.name)}</div><div class="file-size">${fmtSz(file.size)}</div></div><span class="badge proc" id="cvt-badge-${idx}">…</span><a class="dl-link" id="cvt-dl-${idx}" style="display:none">Download</a>`;
   document.getElementById('cvt-list').appendChild(row);
   const img=new Image();
   img.onload=()=>{row.querySelector('.file-thumb').src=img.src;cvtConvert(img,item,idx);};
@@ -1000,15 +1001,15 @@ function loadImg(src) {
 function renderHeicList() {
   const list = document.getElementById('heic-list');
   list.innerHTML = heicItems.map((item, i) => {
-    if (item.error) return `<div class="file-item" style="color:#ef4444">${item.name} — ❌ ${item.error}</div>`;
+    if (item.error) return `<div class="file-item" style="color:#ef4444">${ncEsc(item.name)} — ❌ ${ncEsc(item.error)}</div>`;
     const saved = Math.round((1 - item.newSize/item.origSize)*100);
     return `<div class="file-item">
       <img src="${item.url}" style="width:48px;height:48px;object-fit:cover;border-radius:6px;flex-shrink:0">
       <div style="flex:1;min-width:0">
-        <div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${item.name}</div>
+        <div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${ncEsc(item.name)}</div>
         <div style="font-size:11px;color:#6b7280">${(item.origSize/1024).toFixed(0)}KB → ${(item.newSize/1024).toFixed(0)}KB ${saved > 0 ? '(-'+saved+'%)' : ''}</div>
       </div>
-      <a href="${item.url}" download="${item.name}" class="btn-sec" style="padding:5px 12px;font-size:12px;text-decoration:none">⬇</a>
+      <a href="${item.url}" download="${ncEsc(item.name)}" class="btn-sec" style="padding:5px 12px;font-size:12px;text-decoration:none">⬇</a>
     </div>`;
   }).join('');
 }

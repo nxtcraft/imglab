@@ -56,6 +56,7 @@ footer a{color:#7c3aed;text-decoration:none}
 </style>
 
 <link rel="stylesheet" id="nc-dark" href="/assets/nc-dark.css">
+<script>function ncEsc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c])}</script>
 </head>
 <body>
 <nav>
@@ -132,7 +133,7 @@ function processFile(file, idx) {
   const row = document.createElement('div');
   row.className = 'file-item';
   row.id = `row-${idx}`;
-  row.innerHTML = `<img class="file-thumb" src="" alt=""><div class="file-info"><div class="file-name">${file.name}</div><div class="file-size">${fmtSize(file.size)}</div></div><span class="status-badge processing" id="badge-${idx}">Processing…</span><a class="dl-link" id="dl-${idx}" style="display:none">Download</a>`;
+  row.innerHTML = `<img class="file-thumb" src="" alt=""><div class="file-info"><div class="file-name">${ncEsc(file.name)}</div><div class="file-size">${fmtSize(file.size)}</div></div><span class="status-badge processing" id="badge-${idx}">Processing…</span><a class="dl-link" id="dl-${idx}" style="display:none">Download</a>`;
   fileList.appendChild(row);
   const img = new Image();
   img.onload = () => {
