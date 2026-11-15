@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#4f46e5">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ImgLab — Free Online Image Tools | Background Remover, Compressor, Resizer, Converter, Passport Photo</title>
+<title>Free Image Tools: Background Remover, Compressor | ImgLab</title>
 <meta name="description" content="Free image tools: Remove background, compress, resize, convert, make passport photos and resize exam photos for SSC, UPSC, IBPS, SBI, RRB. All in browser — no upload, no signup.">
 <meta name="keywords" content="remove background free, image compressor online, image resizer, convert image format, passport photo maker, background remover, exam photo resize SSC UPSC IBPS, ssc photo size reducer online, upsc photo resize free, ibps photo signature resize, exam photo resizer india, government exam photo size">
 <link rel="canonical" href="https://nxtcraft.github.io/imglab/">
@@ -122,6 +122,7 @@ footer a{color:#7c3aed;text-decoration:none}
 <script>function ncEsc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c])}</script>
 </head>
 <body>
+<h1 style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">ImgLab — Free Online Image Tools: Background Remover, Image Compressor &amp; Resizer</h1>
 
 <nav>
   <div class="logo">Img<span>Lab</span></div>
@@ -495,7 +496,7 @@ footer a{color:#7c3aed;text-decoration:none}
       <div class="result-grid">
         <div class="img-panel">
           <div class="panel-label">Original</div>
-          <div class="img-wrap"><img id="exam-orig" style="max-height:200px;"></div>
+          <div class="img-wrap"><img id="exam-orig" alt="Original photo preview" style="max-height:200px;"></div>
         </div>
         <div class="img-panel">
           <div class="panel-label" id="exam-result-label">Resized</div>
@@ -1004,7 +1005,7 @@ function renderHeicList() {
     if (item.error) return `<div class="file-item" style="color:#ef4444">${ncEsc(item.name)} — ❌ ${ncEsc(item.error)}</div>`;
     const saved = Math.round((1 - item.newSize/item.origSize)*100);
     return `<div class="file-item">
-      <img src="${item.url}" style="width:48px;height:48px;object-fit:cover;border-radius:6px;flex-shrink:0">
+      <img src="${item.url}" alt="${ncEsc(item.name)}" style="width:48px;height:48px;object-fit:cover;border-radius:6px;flex-shrink:0">
       <div style="flex:1;min-width:0">
         <div style="font-weight:600;font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${ncEsc(item.name)}</div>
         <div style="font-size:11px;color:#6b7280">${(item.origSize/1024).toFixed(0)}KB → ${(item.newSize/1024).toFixed(0)}KB ${saved > 0 ? '(-'+saved+'%)' : ''}</div>
