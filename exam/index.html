@@ -5,8 +5,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UPSC SSC IBPS NEET Exam Photo & Signature Resizer Free | ImgLab</title>
-<meta name="description" content="Resize photo and signature for UPSC CSE, SSC CGL, IBPS PO, NEET, JEE, SBI PO exams. 1-click presets for exact pixel dimensions and KB size.">
-<meta name="keywords" content="UPSC photo resize 300x400, SSC CGL photo 100x120 12kb, IBPS exam photo resize, NEET photo resize online free, government exam photo resizer, exam signature resize India">
+<meta name="description" content="Resize photo and signature for IBPS PO, SSC CGL, UPSC, NEET and JEE uploads. Presets from the 2026 notices with the minimum and maximum KB.">
+<meta name="keywords" content="IBPS PO photo 200x230 20-50 kb, IBPS signature 140x60 10-20 kb, SSC CGL signature 10-20 kb, UPSC photo 20-200 kb, NEET photo resize, exam signature resize India">
 <link rel="canonical" href="https://nxtcraft.github.io/imglab/exam/">
 <meta property="og:title" content="Exam Photo & Signature Resizer — UPSC, SSC, IBPS, NEET">
 <meta name="theme-color" content="#7c3aed">
@@ -59,9 +59,9 @@ h1{font-size:22px;font-weight:900;margin-bottom:4px}
 
 <link rel="stylesheet" id="nc-dark" href="/assets/nc-dark.css">
 <script>function ncEsc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c])}</script>
-<meta property="og:description" content="Resize photo and signature for UPSC CSE, SSC CGL, IBPS PO, NEET, JEE, SBI PO exams. 1-click presets for exact pixel dimensions and KB size.">
+<meta property="og:description" content="Resize photo and signature for IBPS PO, SSC CGL, UPSC, NEET and JEE uploads. Presets from the 2026 notices with the minimum and maximum KB.">
 <meta property="og:url" content="https://nxtcraft.github.io/imglab/exam/">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "UPSC SSC IBPS NEET Exam Photo & Signature Resizer Free", "url": "https://nxtcraft.github.io/imglab/exam/", "description": "Resize photo and signature for UPSC CSE, SSC CGL, IBPS PO, NEET, JEE, SBI PO exams. 1-click presets for exact pixel dimensions and KB size. Free, files never uploaded.", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "INR"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "UPSC SSC IBPS NEET Exam Photo & Signature Resizer Free", "url": "https://nxtcraft.github.io/imglab/exam/", "description": "Resize photo and signature for IBPS PO, SSC CGL, UPSC, NEET and JEE uploads. Presets from the 2026 notices with the minimum and maximum KB. Free, files never uploaded.", "applicationCategory": "MultimediaApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "INR"}}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"NxtCraft","item":"https://nxtcraft.github.io/"},{"@type":"ListItem","position":2,"name":"Documents","item":"https://nxtcraft.github.io/documents/"},{"@type":"ListItem","position":3,"name":"ImgLab","item":"https://nxtcraft.github.io/imglab/"},{"@type":"ListItem","position":4,"name":"UPSC SSC IBPS NEET Exam Photo & Signature Resizer Free","item":"https://nxtcraft.github.io/imglab/exam/"}]}</script>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9027849237070207" crossorigin="anonymous"></script>
 <meta property="og:image" content="https://nxtcraft.github.io/og-image.png">
@@ -77,7 +77,7 @@ h1{font-size:22px;font-weight:900;margin-bottom:4px}
 
 <div class="container">
   <h1>📋 Exam Photo &amp; Signature Resizer</h1>
-  <div class="subtitle">UPSC · SSC CGL · IBPS · NEET · JEE · SBI PO · RRB NTPC · CUET — 1-click presets for exact dimensions + KB limit</div>
+  <div class="subtitle">IBPS PO · SSC CGL · UPSC · NEET · JEE · CUET — presets from the 2026 notices, with minimum and maximum KB</div>
 
   <div class="type-tabs">
     <button class="active" onclick="switchType('photo',this)">🖼️ Photo</button>
@@ -88,6 +88,7 @@ h1{font-size:22px;font-weight:900;margin-bottom:4px}
     <div class="card">
       <h2>1. Choose Exam</h2>
       <div class="preset-grid" id="preset-grid"></div>
+      <p id="pnote" style="font-size:12px;color:#6b7280;margin:6px 0 0"></p>
 
       <h2>2. Upload <span id="type-label">Photo</span></h2>
       <div class="drop-zone" id="drop-zone">
@@ -100,12 +101,8 @@ h1{font-size:22px;font-weight:900;margin-bottom:4px}
       <div class="row3">
         <div class="field"><label>Width (px)</label><input type="number" id="ow" value="200"></div>
         <div class="field"><label>Height (px)</label><input type="number" id="oh" value="230"></div>
-        <div class="field"><label>Max Size</label>
-          <select id="mk">
-            <option value="10">10 KB</option><option value="20">20 KB</option><option value="30">30 KB</option>
-            <option value="50" selected>50 KB</option><option value="100">100 KB</option>
-            <option value="200">200 KB</option><option value="300">300 KB</option>
-          </select>
+        <div class="field"><label>File size (KB): min – max</label>
+          <div style="display:flex;gap:6px;align-items:center"><input type="number" id="mn" value="20" min="0" style="width:50%"><span>–</span><input type="number" id="mk" value="50" min="1" style="width:50%"></div>
         </div>
       </div>
       <div class="row2">
@@ -130,13 +127,13 @@ h1{font-size:22px;font-weight:900;margin-bottom:4px}
 
   <div class="seo-box">
     <h2>Why Exam Photo Upload Fails — And How to Fix It</h2>
-    <p>Government exam portals (UPSC, SSC, NTA NEET) reject uploads for two reasons: <strong>wrong pixel dimensions</strong> (SSC CGL needs exactly 100×120px) or <strong>file size too large</strong> (SSC allows only 4–12 KB). A phone photo is 2–5 MB — over 100× too large. This tool handles both: select your exam, upload any photo, and it resizes to exact pixels while compressing to fit the KB limit.</p>
-    <p><strong>Signature tips:</strong> Sign on white paper with a black pen, photograph in good light, crop tightly. If size still exceeds the limit, reduce JPEG quality to 60–70%.</p>
+    <p>Exam portals reject uploads for three reasons: <strong>wrong dimensions</strong>, a file <strong>larger than the limit</strong>, or a file <strong>smaller than the minimum</strong> (IBPS wants a 20–50 KB photo and a 10–20 KB signature). A phone photo is 2–5 MB — over 100× too large. This tool handles both: select your exam, upload any photo, and it resizes to exact pixels while compressing to fit the KB limit.</p>
+    <p><strong>Signature tips:</strong> Sign on white paper with a black pen, photograph in good light, crop tightly. If the file is over the limit, lower the quality; if it is under the minimum, the tool raises it automatically without changing the picture.</p>
     <p><strong>Files stay on your device.</strong> Nothing is uploaded to any server — all processing happens in your browser using the Canvas API.</p>
     <div class="tags-wrap">
-      <span class="etag">UPSC CSE 2025</span><span class="etag">SSC CGL</span><span class="etag">SSC CHSL</span><span class="etag">IBPS PO</span><span class="etag">IBPS Clerk</span><span class="etag">NEET 2025</span><span class="etag">JEE Main</span><span class="etag">SBI PO</span><span class="etag">RRB NTPC</span><span class="etag">CUET</span>
+      <span class="etag">IBPS PO 2026</span><span class="etag">SSC CGL 2026</span><span class="etag">SSC CHSL</span><span class="etag">UPSC 2026</span><span class="etag">NEET</span><span class="etag">JEE Main</span><span class="etag">CUET</span>
     </div>
-    <p style="font-size:11px;color:#9ca3af;margin-top:8px">Free · No upload · No signup · UPSC 300×400 · SSC 100×120 · IBPS 200×230 · NEET 350×450</p>
+    <p style="font-size:11px;color:#9ca3af;margin-top:8px">Free · No upload · No signup · <a href="/imglab/exam/ibps-po/">IBPS PO</a> · <a href="/imglab/exam/ssc/">SSC</a> · <a href="/imglab/exam/upsc/">UPSC</a> upload rules</p>
   </div>
 </div>
 
@@ -149,19 +146,20 @@ h1{font-size:22px;font-weight:900;margin-bottom:4px}
 
 <canvas id="wc" style="display:none"></canvas>
 <script>
-const P={photo:[{n:'UPSC CSE',w:300,h:400,k:300,s:'300×400 · 300KB'},{n:'SSC CGL/CHSL',w:100,h:120,k:12,s:'100×120 · 12KB'},{n:'IBPS PO/Clerk',w:200,h:230,k:50,s:'200×230 · 50KB'},{n:'NEET 2025',w:350,h:450,k:200,s:'350×450 · 200KB'},{n:'SBI PO/Clerk',w:200,h:200,k:50,s:'200×200 · 50KB'},{n:'JEE Main',w:200,h:230,k:200,s:'200×230 · 200KB'},{n:'RRB NTPC',w:200,h:230,k:50,s:'200×230 · 50KB'},{n:'CUET / NTA',w:200,h:230,k:200,s:'200×230 · 200KB'}],signature:[{n:'UPSC CSE',w:300,h:80,k:300,s:'300×80 · 300KB'},{n:'SSC CGL/CHSL',w:140,h:60,k:12,s:'140×60 · 12KB'},{n:'IBPS PO/Clerk',w:200,h:80,k:20,s:'200×80 · 20KB'},{n:'NEET 2025',w:350,h:160,k:200,s:'350×160 · 200KB'},{n:'SBI PO/Clerk',w:200,h:80,k:50,s:'200×80 · 50KB'},{n:'JEE Main',w:200,h:80,k:30,s:'200×80 · 30KB'},{n:'RRB NTPC',w:200,h:80,k:40,s:'200×80 · 40KB'},{n:'CUET / NTA',w:200,h:80,k:200,s:'200×80 · 200KB'}]};
+const P={photo:[{id:'ibps-po',n:'IBPS PO 2026',w:200,h:230,mn:20,k:50,s:'200×230 · 20–50 KB',u:'/imglab/exam/ibps-po/'},{id:'upsc',n:'UPSC (2026 notices)',w:400,h:500,mn:20,k:200,s:'350–1000 px · 20–200 KB',u:'/imglab/exam/upsc/'},{id:'nta',n:'NTA: NEET / JEE / CUET',w:350,h:450,mn:10,k:200,s:'10–200 KB · check bulletin'}],signature:[{id:'ibps-po',n:'IBPS PO 2026',w:140,h:60,mn:10,k:20,s:'140×60 · 10–20 KB',u:'/imglab/exam/ibps-po/'},{id:'ssc',n:'SSC CGL 2026',w:300,h:100,mn:10,k:20,s:'~6×2 cm · 10–20 KB',u:'/imglab/exam/ssc/'},{id:'upsc',n:'UPSC (2026 notices)',w:400,h:400,mn:20,k:100,s:'3 signs · 20–100 KB',u:'/imglab/exam/upsc/'},{id:'nta',n:'NTA: NEET / JEE / CUET',w:350,h:150,mn:10,k:30,s:'10–30 KB · check bulletin'}]};
 let ct='photo',ai=null,lf=null;
 function switchType(t,btn){ct=t;ai=null;document.querySelectorAll('.type-tabs button').forEach((b,i)=>b.classList.toggle('active',(t==='photo'&&i===0)||(t==='signature'&&i===1)));document.getElementById('type-label').textContent=t==='photo'?'Photo':'Signature';render();}
-function render(){const g=document.getElementById('preset-grid');g.innerHTML='';P[ct].forEach((p,i)=>{const b=document.createElement('button');b.className='preset-btn'+(ai===i?' active':'');b.innerHTML=`<span class="en">${p.n}</span><span class="es">${p.s}</span>`;b.onclick=()=>{ai=i;document.getElementById('ow').value=p.w;document.getElementById('oh').value=p.h;const s=document.getElementById('mk');const opts=[...s.options].map(o=>+o.value);s.value=opts.reduce((a,b)=>Math.abs(b-p.k)<Math.abs(a-p.k)?b:a);render();if(lf)document.getElementById('btn-resize').disabled=false;};g.appendChild(b);});}
+function render(){const g=document.getElementById('preset-grid');g.innerHTML='';const pn=document.getElementById('pnote');const cp=ai!==null?P[ct][ai]:null;pn.innerHTML=(ct==='photo'?'SSC and RRB forms now take a <strong>live photo</strong> with your webcam or phone, so no photo file is needed for them. ':'')+(cp&&cp.u?'<a href="'+cp.u+'">Full '+cp.n+' upload rules →</a>':(cp?'Values for NTA exams: confirm in the latest Information Bulletin.':''));P[ct].forEach((p,i)=>{const b=document.createElement('button');b.className='preset-btn'+(ai===i?' active':'');b.innerHTML=`<span class="en">${p.n}</span><span class="es">${p.s}</span>`;b.onclick=()=>{ai=i;document.getElementById('ow').value=p.w;document.getElementById('oh').value=p.h;document.getElementById('mk').value=p.k;document.getElementById('mn').value=p.mn||0;render();if(lf)document.getElementById('btn-resize').disabled=false;};g.appendChild(b);});}
 const dz=document.getElementById('drop-zone'),fi=document.getElementById('file-input');
 fi.addEventListener('change',e=>{if(e.target.files[0])hf(e.target.files[0]);});
 dz.addEventListener('dragover',e=>{e.preventDefault();dz.style.borderColor='#7c3aed';});
 dz.addEventListener('dragleave',()=>dz.style.borderColor='');
 dz.addEventListener('drop',e=>{e.preventDefault();if(e.dataTransfer.files[0])hf(e.dataTransfer.files[0]);});
 function hf(f){lf=f;const r=new FileReader();r.onload=e=>{dz.innerHTML=`<img src="${e.target.result}" style="max-height:120px;border-radius:6px;border:1px solid #ddd6fe"><div style="font-size:11px;color:#9ca3af;margin-top:4px">${ncEsc(f.name)} · ${(f.size/1024).toFixed(1)} KB</div>`;if(ai!==null)document.getElementById('btn-resize').disabled=false;};r.readAsDataURL(f);}
+function ncPad(d,minKB){var b=atob(d.split(',')[1]),need=Math.ceil(minKB*1024+1024-b.length),seg='';while(need>0){var n=Math.min(need,60000),L=n+2;seg+='\xFF\xFE'+String.fromCharCode(L>>8,L&255)+' '.repeat(n);need-=n+4;}return 'data:image/jpeg;base64,'+btoa(b.slice(0,2)+seg+b.slice(2));}
 function doResize(){
   if(!lf)return;
-  const W=+document.getElementById('ow').value,H=+document.getElementById('oh').value,MK=+document.getElementById('mk').value,fmt=document.getElementById('fmt').value,q=+document.getElementById('q').value/100;
+  const W=+document.getElementById('ow').value,H=+document.getElementById('oh').value,MK=+document.getElementById('mk').value,MN=+document.getElementById('mn').value||0,fmt=document.getElementById('fmt').value,q=+document.getElementById('q').value/100;
   const img=new Image(),u=URL.createObjectURL(lf);
   img.onload=()=>{
     const c=document.getElementById('wc');c.width=W;c.height=H;
@@ -170,20 +168,22 @@ function doResize(){
     ctx.drawImage(img,sx,sy,sw,sh,0,0,W,H);URL.revokeObjectURL(u);
     let d,uq=q;
     for(let qq=q;qq>=0.1;qq-=0.05){d=c.toDataURL(fmt,qq);uq=qq;if((d.length*.75)/1024<=MK||fmt==='image/png')break;}
-    const kb=(d.length*.75)/1024,pass=kb<=MK,ext=fmt==='image/jpeg'?'jpg':'png';
+    let padded=false;if(fmt==='image/jpeg'&&MN&&(d.length*.75)/1024<MN){d=c.toDataURL(fmt,1);uq=1;if((d.length*.75)/1024<MN){d=ncPad(d,MN);padded=true;}}
+    const kb=(atob(d.split(',')[1]).length)/1024,pass=kb<=MK&&kb>=MN,ext=fmt==='image/jpeg'?'jpg':'png';
     document.getElementById('result-area').innerHTML=`
       <img src="${d}" style="max-width:100%;max-height:240px;border-radius:8px;border:1px solid #ddd6fe;margin-bottom:10px">
       <div class="meta">
         <div class="meta-row"><span>Dimensions</span><span>${W}×${H}px</span></div>
-        <div class="meta-row"><span>File Size</span><span class="${pass?'pass':'fail'}">${kb.toFixed(1)} KB ${pass?'✓ PASS':'✗ EXCEEDS'}</span></div>
-        <div class="meta-row"><span>Max Allowed</span><span>${MK} KB</span></div>
+        <div class="meta-row"><span>File Size</span><span class="${pass?'pass':'fail'}">${kb.toFixed(1)} KB ${pass?'✓ PASS':(kb>MK?'✗ TOO LARGE':'✗ TOO SMALL')}</span></div>
+        <div class="meta-row"><span>Allowed</span><span>${MN?MN+"–":"up to "}${MK} KB</span></div>${padded?`<div class="meta-row"><span>Note</span><span>Size raised to the minimum; picture unchanged</span></div>`:""}
         <div class="meta-row"><span>Quality Used</span><span>${Math.round(uq*100)}%</span></div>
       </div>
-      ${!pass?`<div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:7px;padding:8px;font-size:12px;color:#dc2626;margin-bottom:8px">⚠️ Exceeds ${MK} KB. Reduce quality to 60–70% and retry.</div>`:''}
+      ${!pass?`<div style="background:#fef2f2;border:1px solid #fca5a5;border-radius:7px;padding:8px;font-size:12px;color:#dc2626;margin-bottom:8px">⚠️ ${kb>MK?"Over "+MK+" KB. Reduce the width/height or quality and retry.":"Under "+MN+" KB. Increase the width/height and retry."}</div>`:''}
       <a class="dl-btn" href="${d}" download="exam-${ct}-${W}x${H}.${ext}">⬇️ Download ${ct==='photo'?'Photo':'Signature'}</a>`;
   };img.src=u;
 }
 render();
+(function(){try{var q=new URLSearchParams(location.search),t=q.get('type'),e=q.get('exam');if(t==='signature'){var bt=document.querySelectorAll('.type-tabs button')[1];switchType('signature',bt);}if(e){var i=P[ct].findIndex(function(p){return p.id===e});if(i>=0)document.querySelectorAll('#preset-grid button')[i].click();}}catch(x){}})();
 </script>
 <script src="/assets/nc-theme.js" defer></script>
 <!-- nc-about --><section class="nc-about" aria-label="About this tool"><style>.nc-about{max-width:820px;margin:32px auto 8px;padding:0 16px;font:15px/1.75 system-ui,-apple-system,Segoe UI,sans-serif;color:inherit}.nc-about h2{font-size:1.25rem;margin:0 0 .6rem}.nc-about h3{font-size:1.05rem;margin:1.3rem 0 .4rem}.nc-about p,.nc-about li{margin:0 0 .7rem}.nc-about ul,.nc-about ol{padding-left:1.3rem;margin:0 0 .7rem}.nc-about details{margin:.45rem 0;padding:.5rem .8rem;border:1px solid rgba(128,128,128,.35);border-radius:8px}.nc-about summary{cursor:pointer;font-weight:600}.nc-about details p{margin:.5rem 0 0}</style><h2>Why exam photo uploads fail and how to fix them</h2><p>Online exam forms such as UPSC, SSC, IBPS, NEET and JEE usually reject a photo or signature for one of four reasons: the pixel dimensions are wrong, the file is larger than the allowed size, the format is not accepted (most want JPG or JPEG), or the image does not follow the rules for background, face position and signature. A phone camera photo is often 2 to 5 MB, far larger than the few kilobytes most portals allow.</p><p>This tool resizes your photo or signature to the dimensions you choose and compresses it to stay under a size limit such as 20 KB or 50 KB. It runs in your browser, so your photo is not uploaded.</p><h3>How to use it</h3><ol><li>Choose the exam and whether you are resizing a photo or a signature.</li><li>Upload your image in JPG or PNG format.</li><li>Check the width, height, maximum size and format, and adjust them to match the official notification.</li><li>Press Resize and Download, then confirm the file size and preview before uploading to the exam portal.</li></ol><h3>Good to know</h3><ul><li>Exam requirements change every year. Always check the dimensions and size limits in the latest official notification and use the values it gives.</li><li>Photos usually need a plain light background, a clear front-facing face and no cap or dark glasses.</li><li>Signatures are normally written in black or blue ink on plain white paper and then photographed or scanned.</li><li>Keep the original image and save the resized file under a clear name.</li></ul><h3>Frequently asked questions</h3><details><summary>Is my photo uploaded to a server?</summary><p>No. Resizing and compression happen inside your browser, and nothing is stored.</p></details><details><summary>What if the file is still too large?</summary><p>Lower the quality setting or choose a smaller maximum size, then resize again.</p></details><details><summary>Are the presets always up to date?</summary><p>They are provided for convenience. Exam bodies can change rules, so the official notification is the final authority.</p></details></section>
